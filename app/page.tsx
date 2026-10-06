@@ -72,13 +72,13 @@ export default function Home() {
     setError("");
   };
   const goNext = () => {
-    const required = step === 1 ? ["care"] : step === 2 ? ["staff", "room"] : step === 3 ? ["recommend"] : [];
+    const required = step === 0 ? ["care"] : step === 1 ? ["staff", "room"] : step === 2 ? ["recommend"] : [];
     if (required.some((id) => !answers[id])) {
       setError("Please choose a response to continue.");
       return;
     }
     setError("");
-    setStep((current) => Math.min(current + 1, 4));
+    setStep((current) => Math.min(current + 1, 3));
   };
   const goBack = () => {
     setError("");
@@ -128,18 +128,7 @@ export default function Home() {
 
       <div className="content-wrap">
         <div className="survey-card">
-          {step === 0 ? <div className="welcome">
-            <span className="eyebrow">PATIENT EXPERIENCE</span>
-            <h1>Your Feedback<br /><em>Matters.</em></h1>
-            <p className="welcome-question">How was your stay with us?</p>
-            <p className="welcome-copy">Your feedback helps us improve our services and deliver the best care for you and your loved ones.</p>
-            <div className="welcome-art" aria-hidden="true">
-              <div className="art-sheet"><span className="clip" /><Check size={24} /><Check size={24} /><Check size={24} /></div>
-              <span className="art-heart">💜</span>
-            </div>
-            <button className="button button-gold start-button" onClick={() => setStep(1)}>Start Feedback <ArrowRight size={19} /></button>
-            <span className="welcome-foot"><Heart size={16} fill="currentColor" /> Service with a difference</span>
-          </div> : submitted ? <div className="thank-you">
+          {submitted ? <div className="thank-you">
             <div className="thank-icon"><Heart size={42} fill="currentColor" /></div>
             <span className="eyebrow">FEEDBACK RECEIVED</span>
             <h1>Thank You!</h1>
@@ -147,16 +136,16 @@ export default function Home() {
             <p>We appreciate you choosing <strong>Value Family Hospital.</strong></p>
             <button className="button button-plum" onClick={() => { setSubmitted(false); setStep(0); setAnswers({}); setComments(""); setPhone(""); setContact(true); }}>Start again <ArrowRight size={18} /></button>
           </div> : <div className="survey-body">
-            <div className="step-top"><button className="top-back" onClick={goBack}><ChevronLeft size={21} /> Back</button><span>{step + 1} of 5</span></div>
-            <div className="progress" aria-label={`Step ${step + 1} of 5`}>{[0, 1, 2, 3, 4].map((item) => <span key={item} className={item < step ? "filled" : ""} />)}</div>
+            <div className="step-top">{step > 0 ? <button className="top-back" onClick={goBack}><ChevronLeft size={21} /> Back</button> : <span />}<span>{step + 1} of 4</span></div>
+            <div className="progress" aria-label={`Step ${step + 1} of 4`}>{[0, 1, 2, 3].map((item) => <span key={item} className={item < step ? "filled" : ""} />)}</div>
             <div className="step-content" key={step}>
-              {step === 1 && <Rating title="How would you rate the overall quality of care you received during your stay?" id="care" options={careOptions} value={answers.care} onChange={setAnswer} />}
-              {step === 2 && <div className="two-questions">
+              {step === 0 && <Rating title="How would you rate the overall quality of care you received during your stay?" id="care" options={careOptions} value={answers.care} onChange={setAnswer} />}
+              {step === 1 && <div className="two-questions">
                 <Rating title="How would you rate the friendliness and professionalism of our staff?" id="staff" options={careOptions} value={answers.staff} onChange={setAnswer} />
                 <Rating title="How would you rate the cleanliness and comfort of your room?" id="room" options={careOptions} value={answers.room} onChange={setAnswer} />
               </div>}
-              {step === 3 && <Rating title="How likely are you to recommend Value Family Hospital to your friends or family?" id="recommend" options={recommendationOptions} value={answers.recommend} onChange={setAnswer} />}
-              {step === 4 && <div className="final-form">
+              {step === 2 && <Rating title="How likely are you to recommend Value Family Hospital to your friends or family?" id="recommend" options={recommendationOptions} value={answers.recommend} onChange={setAnswer} />}
+              {step === 3 && <div className="final-form">
                 <label className="field-label" htmlFor="comments">Any additional comments<br />or suggestions?</label>
                 <div className="textarea-wrap"><textarea id="comments" placeholder="Write your comments here... (Optional)" value={comments} onChange={(e) => setComments(e.target.value)} /><MessageCircle size={34} aria-hidden="true" /></div>
                 <fieldset className="contact-field"><legend>May we contact you if we need<br />more details about your feedback?</legend><div className="segmented"><button type="button" className={contact ? "active" : ""} onClick={() => { setContact(true); setError(""); }}>Yes</button><button type="button" className={!contact ? "active" : ""} onClick={() => { setContact(false); setError(""); }}>No</button></div></fieldset>
@@ -165,7 +154,7 @@ export default function Home() {
               </div>}
             </div>
             {error && <p className="form-error" role="alert">{error}</p>}
-            <div className="step-actions"><button className="button button-outline" onClick={goBack} disabled={submitting}><ArrowLeft size={18} /> Back</button>{step === 4 ? <button className="button button-gold" onClick={submit} disabled={submitting}>{submitting ? "Submitting..." : "Submit Feedback"} <ArrowRight size={18} /></button> : <button className="button button-plum" onClick={goNext}>Next <ArrowRight size={18} /></button>}</div>
+            <div className="step-actions">{step > 0 ? <button className="button button-outline" onClick={goBack} disabled={submitting}><ArrowLeft size={18} /> Back</button> : <span />}<button className={step === 3 ? "button button-gold" : "button button-plum"} onClick={step === 3 ? submit : goNext} disabled={submitting}>{step === 3 ? (submitting ? "Submitting..." : "Submit Feedback") : "Next"} <ArrowRight size={18} /></button></div>
           </div>}
           <div className="wave" aria-hidden="true" />
         </div>
