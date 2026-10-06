@@ -85,10 +85,6 @@ export default function Home() {
     setStep((current) => Math.max(current - 1, 0));
   };
   const submit = async () => {
-    if (contact && !phone.trim()) {
-      setError("Please enter a contact number, or select No.");
-      return;
-    }
     setError("");
     const client = getSupabase();
     if (!client) {
@@ -105,7 +101,7 @@ export default function Home() {
         recommend: answers.recommend,
       },
       comment: comments.trim() || null,
-      contact_phone: contact ? phone.trim() : null,
+      contact_phone: contact && phone.trim() ? phone.trim() : null,
     });
     setSubmitting(false);
     if (saveError) {
