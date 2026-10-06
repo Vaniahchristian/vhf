@@ -2,9 +2,18 @@
 
 import { useState } from "react";
 import { ArrowLeft, ArrowRight, Check, ChevronLeft, Heart, MessageCircle, Phone } from "lucide-react";
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 type Answers = Record<string, string>;
+
+let supabase: SupabaseClient | null = null;
+function getSupabase() {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !key) return null;
+  if (!supabase) supabase = createClient(url, key);
+  return supabase;
+}
 
 const careOptions = [
   { label: "Excellent", emoji: "😃", color: "plum" },
@@ -81,14 +90,13 @@ export default function Home() {
       return;
     }
     setError("");
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    if (!url || !key) {
+    const client = getSupabase();
+    if (!client) {
       setError("Feedback is unavailable right now. Please try again later.");
       return;
     }
     setSubmitting(true);
-    const { error: saveError } = await createClient(url, key).from("submissions").insert({
+    const { error: saveError } = await client.from("submissions").insert({
       source: "inpatient",
       inpatient_answers: {
         care: answers.care,
