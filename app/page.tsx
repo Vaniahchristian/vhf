@@ -113,7 +113,7 @@ export default function Home() {
       <header className="site-header">
         <div className="brand">
           <img src="/logo.png" alt="Value Family Hospital logo" />
-          <div><strong>Value Family Hospital</strong><span>Care with Compassion</span></div>
+          <div><strong>Value Family Hospital</strong><span>Service with a Difference</span></div>
         </div>
         <span className="header-note"><Heart size={15} fill="currentColor" /> Service with a difference</span>
       </header>
@@ -163,7 +163,7 @@ export default function Home() {
         </div>
         <aside className="side-panel"><span className="side-kicker">VALUE FAMILY HOSPITAL</span><h2>Every voice helps us care better.</h2><p>We listen to each experience with care and use it to make every stay more comfortable.</p><div className="side-detail"><span>✦</span><div><strong>Thoughtful care</strong><small>For you and your loved ones</small></div></div><div className="side-detail"><span>✦</span><div><strong>Meaningful feedback</strong><small>A better experience for everyone</small></div></div><div className="side-quote">“Service with a difference”</div></aside>
       </div>
-      <footer className="site-footer"><span>© 2026 Value Family Hospital</span><span>Care with Compassion</span></footer>
+      <footer className="site-footer"><span>© 2026 Value Family Hospital</span><span>Service with a Difference</span></footer>
     </div>
   </main>;
 }
