@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "/(.*)",
+      "destination": "https://hospital-wheat-three.vercel.app/inpatient",
+      "permanent": false
+    }
+  ]
+}
